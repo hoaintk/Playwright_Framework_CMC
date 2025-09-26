@@ -1,20 +1,16 @@
 name: CI
-
 on:
-  push:
-    branches: [ "main", "feature/**" ]
-  pull_request:
-    branches: [ "main" ]
+  push: { branches: [ "main", "feature/**" ] }
+  pull_request: { branches: [ "main" ] }
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
@@ -22,10 +18,10 @@ jobs:
       - name: Install deps
         run: npm ci
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+      # CÀI BROWSER + LINUX DEPS CHUẨN CHO CI
+      - uses: microsoft/playwright-github-action@v1
 
-      - name: Run tests
+      - name: Run tests (Chromium only)
         run: npx playwright test --reporter=list,junit
         env:
           CI: true
@@ -44,4 +40,12 @@ jobs:
         with:
           name: junit-results
           path: test-results
+          if-no-files-found: ignore
+
+      - name: Upload traces
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: test-results/**/trace.zip
           if-no-files-found: ignore
