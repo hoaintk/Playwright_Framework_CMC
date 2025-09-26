@@ -15,8 +15,8 @@ export default defineConfig({
 
   reporter: [['list'], ['junit', { outputFile: 'test-results/results.xml' }]],
   use: {
-    headless: true,          // ép headless khi chạy CI
-    trace: 'on-first-retry', // có trace để debug khi fail
+    headless: true,          
+    trace: 'on-first-retry', 
   },
   testDir: './tests',
   /* Run tests in files in parallel */
