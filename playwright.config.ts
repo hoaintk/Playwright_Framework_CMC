@@ -12,12 +12,6 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-
-  reporter: [['list'], ['junit', { outputFile: 'test-results/results.xml' }]],
-  use: {
-    headless: true,          
-    trace: 'on-first-retry', 
-  },
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -35,6 +29,13 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 
   globalSetup: require.resolve('./global-setup'),
+
+    use: {
+    headless: false,          
+    trace: 'on-first-retry', 
+    baseURL: 'https://automationexercise.com/',
+    storageState: 'storage/auth.json',
+    },
 
   /* Configure projects for major browsers */
   projects: [
