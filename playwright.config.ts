@@ -31,7 +31,7 @@ export default defineConfig({
   globalSetup: require.resolve('./global-setup'),
 
     use: {
-    headless: false,          
+    headless: true,          
     trace: 'on-first-retry', 
     baseURL: 'https://automationexercise.com/',
     storageState: 'storage/auth.json',
