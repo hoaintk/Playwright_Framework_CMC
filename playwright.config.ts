@@ -12,6 +12,12 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
+  reporter: [
+    ['list'],
+    ['junit', { outputFile: 'test-results/results.xml' }],
+    ['html', { open: 'never' }],         
+  ],
+
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -35,6 +41,8 @@ export default defineConfig({
     trace: 'on-first-retry', 
     baseURL: 'https://automationexercise.com/',
     storageState: 'storage/auth.json',
+    screenshot: 'only-on-failure',        
+    video: 'retain-on-failure', 
     },
 
   /* Configure projects for major browsers */
