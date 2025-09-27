@@ -1,44 +1,35 @@
 name: Playwright CI
 
-# Khi nào pipeline chạy
 on:
   push:
-    branches: [ "main", "feature/**" ]   # chạy khi push code vào main hoặc feature/*
+    branches: [ "main", "feature/**" ]
   pull_request:
-    branches: [ "main" ]                 # chạy khi mở PR vào main
+    branches: [ "main" ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-
     steps:
-      # 1. Lấy code từ repo về
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # 2. Setup NodeJS
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      # 3. Cài dependency từ package-lock.json
       - name: Install deps
         run: npm ci
 
-      # 4. Cài browser + Linux dependencies cho Playwright
-      - name: Install Playwright
-        uses: microsoft/playwright-github-action@v1
+      # CÀI browsers + Linux deps theo docs Playwright
+      - name: Install Playwright browsers & deps
+        run: npx playwright install --with-deps
 
-      # 5. Chạy test
       - name: Run Playwright tests
         run: npx playwright test --reporter=list,junit
         env:
           CI: true
 
-      # 6. Upload báo cáo HTML
       - name: Upload HTML report
         if: always()
         uses: actions/upload-artifact@v4
@@ -47,7 +38,6 @@ jobs:
           path: playwright-report
           if-no-files-found: ignore
 
-      # 7. Upload JUnit XML để CI dashboard đọc
       - name: Upload JUnit results
         if: always()
         uses: actions/upload-artifact@v4
@@ -56,7 +46,6 @@ jobs:
           path: test-results
           if-no-files-found: ignore
 
-      # 8. Upload trace.zip để debug khi fail
       - name: Upload traces
         if: always()
         uses: actions/upload-artifact@v4
