@@ -16,4 +16,6 @@ test('checkout successfully', async ({ page }) => {
   await productsPage.addProductToCart(product.productName);
   await cartPage.checkOutSuccessfully(product.productName, '. First Last', 'India', '01283474938', cardInfo.name, cardInfo.cardNumber,
     cardInfo.CVC, cardInfo.Month, cardInfo.Year);
+  await cartPage.checkOutSuccessfully(product.productName, '. First Last', 'India', '01283474938', cardInfo.name, cardInfo.cardNumber,
+    cardInfo.CVC, cardInfo.Month, cardInfo.Year);
 });
