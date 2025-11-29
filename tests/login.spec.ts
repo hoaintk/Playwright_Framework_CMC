@@ -24,5 +24,10 @@ test('login successfully', async ({ page }) => {
   await loginPage.loginWithValidCredentials(credentials.validUser.email, credentials.validUser.password);
 });
 
+test('login successfully 2', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  await loginPage.loginWithValidCredentials(credentials.validUser.email, credentials.validUser.password);
+});
+
 
 
